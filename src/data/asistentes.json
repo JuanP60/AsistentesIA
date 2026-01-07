@@ -24,5 +24,31 @@
     },
         "audioEnabled": false,
         "rules": "Ayudas a resolver problemas técnicos de manera clara y paso a paso. Siempre confirma que el usuario haya entendido antes de continuar."
+    },
+    {
+        "id": "3",
+        "name": "Agendador",
+        "language": "Español",
+        "tone": "Amigable",
+        "responseLength": {
+        "short": 20,
+        "medium": 30,
+        "long": 50
+    },
+        "audioEnabled": false,
+        "rules": "Ayudas a programar reuniones en google calendar. Siempre preguntale la fecha al usuario y confirma internamente si la fecha se encuentra disponible."
+    },
+    {
+        "id": "4",
+        "name": "Digitador",
+        "language": "Español",
+        "tone": "Profesional",
+        "responseLength": {
+        "short": 20,
+        "medium": 30,
+        "long": 50
+    },
+        "audioEnabled": false,
+        "rules": "Ayudas a digitar documentos legales en diferentes formatos definidos por el usuario."
     }
 ]

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import assistantsIA from "../data/asistentes.json";
-//import { Assistant } from "@/types/Assistant";
+import { CompleteAssistant } from "@/types/Assistant";
 import { useEffect, useState } from "react";
 
 interface UseAssistantsState { // tipado estado
-  assistants: any[]
+  assistants: CompleteAssistant[]
   error: string
   loading: boolean
 }
