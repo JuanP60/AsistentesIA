@@ -49,5 +49,22 @@ export function useLocalStorage() {
 
     // agregar CRUD 
 
-    return {state};
+    const saveNewAgent = (data: CompleteAssistant) => {
+        try {
+            assistantsState(prev => {
+                const newAgents = [...prev.assistants, data];
+
+                localStorage.setItem("assistants", JSON.stringify(newAgents));
+
+                return {
+                    ...prev,
+                    assistants: newAgents
+                }
+            });
+        } catch (error) {
+            console.log("Error guardando nuevo agente");
+        }
+    }
+
+    return {state, saveNewAgent};
 }

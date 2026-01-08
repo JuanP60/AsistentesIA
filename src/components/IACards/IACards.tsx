@@ -10,9 +10,10 @@ export function IACards () {
     const {state} = useLocalStorage();
 
     if (!!state.loading) {
-        return (
-            <Loader />
-    )} else {
+        return <Loader />
+    } else if (!!state.error) {
+        return <p className="flex justify-center text-center text-gray-500 mt-16">No hay Agentes creados por el momento, crea tu primer agente!</p>
+    } else {
         
         return (
             <ul className="flex flex-col gap-10 mx-auto max-w-74 md:max-w-2xl lg:max-w-4xl">
@@ -32,7 +33,12 @@ export function IACards () {
   
                         <div className="flex items-center gap-1 md:gap-2">
                             <Link href="" className="hover:-translate-y-0.5 transition-all duration-200 ease-out"><Pencil size={20}/></Link>
-                            <button className="hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer"><Trash size={20}/></button>
+                            <button 
+                                className="hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer"
+                                
+                                >
+                                <Trash size={20}/>
+                            </button>
                             <Link href="" className="hover:-translate-y-0.5 transition-all duration-200 ease-out"><Brain size={20}/></Link>
                         </div>
                     </li>
