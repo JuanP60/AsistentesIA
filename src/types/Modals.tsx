@@ -3,7 +3,8 @@ export interface ModalsTypes {
     onClose1: () => void
 }
 
-export interface ModalsTypes2 {
-    isOpen2: boolean
-    onClose2: () => void
+export interface ModalsDeleteTypes {
+    isOpenDelete: boolean
+    isCloseDelete: () => void
+    id: string
 }

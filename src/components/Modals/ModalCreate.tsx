@@ -6,7 +6,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
 
-    const {saveNewAgent} = useLocalStorage();
+    const {saveNewAgent} = useLocalStorage(); // cambiar por un context, envolver en layout.tsx
 
     const [step, setStep] = useState<1 | 2>(1); // manejo de modales step by step
 
@@ -62,10 +62,21 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
         }));
     }
 
-    const saveNew = () => {
+    const saveNew = (e: React.FormEvent<HTMLFormElement>) => {
         // validar porcentajes
-        saveNewAgent(formData);
-    }
+        e.preventDefault();
+        //const porcentages = Number(formData.responseLength.short + formData.responseLength.medium + formData.responseLength.long);
+
+        const newAgent: CompleteAssistant = {
+            ...formData, // copia del objeto ya creado con datos ingreados por el user.
+            id: Date.now().toString(),
+        }
+
+        saveNewAgent(newAgent);
+    
+        //alert("Porcentajes deben sumar 100% antes de continuar");
+        
+    } 
 
     if (isOpen1) {
 
@@ -154,7 +165,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                             <span className="text-gray-400">2</span>
                         </div>
 
-                        <form className="flex flex-col gap-7">
+                        <form onSubmit={saveNew} className="flex flex-col gap-7">
                             <div className="flex">
                                 <h1 className="text-wrap">Digita el porcentaje que deseas en cada <br /> tipo de respuesta:</h1>
                             </div>
@@ -208,7 +219,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
 
                             <div className="flex gap-3 items-center">
                                 <label htmlFor="audio">Respuestas de audio</label>
-                                <input type="checkbox" name="audio" id="audio" 
+                                <input type="checkbox" name="audio" id="audio"
                                 checked={formData.audioEnabled}
                                 onChange={(e) => setFormData(prev => ({
                                     ...prev,
@@ -224,7 +235,8 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                             <div className="flex justify-center gap-6">
                                 <button onClick={handleBack} className="hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer">Atras</button>
                                 <button className="border border-black p-2 rounded-2xl text-white bg-black hover:bg-white hover:text-black hover:scale-[1.02] transition-all duration-200 ease-out cursor-pointer"
-                                onClick={saveNew}
+                                onClick={() => saveNew}
+                                type="submit"
                                 >
                                     Guardar
                                 </button>

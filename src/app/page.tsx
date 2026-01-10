@@ -7,7 +7,7 @@ import { ModalCreate } from "@/components/Modals/ModalCreate";
 export default function Home() {
 
   const [isOpen1, setIsOpen1] = useState<boolean>(false);
-
+  
   return (
     <div className="flex flex-col gap-16 mt-24">
         <header className="flex flex-col md:flex-row justify-center items-center gap-7 md:gap-70 lg:gap-120">

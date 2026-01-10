@@ -18,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={dmSans.variable}>
       <body className="bg-white">
+        {/* aca va el context, envolvemos todo el content para acceder a localStorage */}
         <Header />
         <main className="min-h-screen">
           {children}

@@ -58,7 +58,9 @@ export function useLocalStorage() {
 
                 return {
                     ...prev,
-                    assistants: newAgents
+                    assistants: newAgents,
+                    error: "",
+                    loading: false
                 }
             });
         } catch (error) {
@@ -66,5 +68,20 @@ export function useLocalStorage() {
         }
     }
 
-    return {state, saveNewAgent};
+    const deleteAgent = (id: string) => {   
+
+        const currentAssistants = state.assistants ?? []; // avoid undedfined issues
+     
+        const filtered = currentAssistants.filter((agent) => agent.id !== id); // lista de todos los agentes que no cumplan con el id enviado
+
+        assistantsState(prev => ({
+            ...prev,
+            assistants: filtered,
+            error: "",
+            loading: false
+        }));
+        localStorage.setItem("assistants", JSON.stringify(filtered));
+    }
+
+    return {state, saveNewAgent, deleteAgent};
 }
