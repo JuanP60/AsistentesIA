@@ -2,6 +2,7 @@ import "./globals.css"
 import { DM_Sans } from "next/font/google";
 import { Header } from "@/components/Header/Header";
 import { Footer } from "@/components/Footer/Footer";
+import { StorageProvider } from "@/context/LocalStorageContext";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -19,11 +20,13 @@ export default function RootLayout({
     <html lang="en" className={dmSans.variable}>
       <body className="bg-white">
         {/* aca va el context, envolvemos todo el content para acceder a localStorage */}
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
+        <StorageProvider>
+          <Header />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+        </StorageProvider>
       </body>
     </html>
   );

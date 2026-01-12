@@ -1,15 +1,15 @@
+"use client";
+
 import { ModalsTypes} from "@/types/Modals";
 import { CompleteAssistant } from "@/types/Assistant";
 import { BotMessageSquare, FileCode } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { localStorageContext } from "@/context/LocalStorageContext";
 
 export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
 
-    const {saveNewAgent} = useLocalStorage(); // cambiar por un context, envolver en layout.tsx
-
+    const {saveNewAgent} = localStorageContext();
     const [step, setStep] = useState<1 | 2>(1); // manejo de modales step by step
-
     const [formData, setFormData] = useState<CompleteAssistant>({
         id: "",
         name: "",
@@ -27,12 +27,12 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
     // aislar modal
 
     useEffect(() => {
+        if (!isOpen1) return;
 
-        if (isOpen1) {
-            document.body.style.overflow = "hidden";
-        } else {
+        document.body.style.overflow = "hidden";
+        return () => {
             document.body.style.overflow = "auto";
-        }
+        };
     }, [isOpen1]);
 
     // funciones
@@ -65,8 +65,10 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
     const saveNew = (e: React.FormEvent<HTMLFormElement>) => {
         // validar porcentajes
         e.preventDefault();
-        //const porcentages = Number(formData.responseLength.short + formData.responseLength.medium + formData.responseLength.long);
-
+        onCleanData(); // limpia form
+        setStep(1); // reinicio steps modales
+        onClose1(); // cierro todos los modales luego de guardar
+        //const porcentages = Number(formData.responseLength.short + formData.responseLength.medium + formData.responseLength.long)
         const newAgent: CompleteAssistant = {
             ...formData, // copia del objeto ya creado con datos ingreados por el user.
             id: Date.now().toString(),
@@ -112,6 +114,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                                 value={formData.language}
                                 className="w-full appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none
                                 transition-all duration-200 focus:border-black focus:ring-1 focus:ring-black hover:cursor-pointer">
+                                    <option value="" disabled className="placeholder-gray-400">Seleccion un idioma</option>
                                     <option value="español">Español</option>
                                     <option value="ingles">Inglés</option>
                                     <option value="portugues">Portugués</option>
@@ -129,6 +132,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                                 value={formData.tone}
                                 className="w-full appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none
                                 transition-all duration-200 focus:border-black focus:ring-1 focus:ring-black hover:cursor-pointer">
+                                    <option value="" disabled>Selecciona un tono</option>
                                     <option value="formal">Formal</option>
                                     <option value="casual">Casual</option>
                                     <option value="profesional">Profesional</option>
@@ -158,7 +162,9 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                     </div>
                 )}
 
-                {step === 2 && (
+
+
+                {(step === 2 && (
                     <div className="flex flex-col items-center w-[90%] md:w-auto justify-center gap-10 fixed bg-white border border-gray-100 rounded-4xl p-10 md:p-14">
                         <div className="flex gap-40 md:gap-96">
                             <FileCode />
@@ -173,7 +179,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                             <div className="flex flex-col md:flex-row gap-2">
                                 <section className="flex gap-3 items-center">
                                     <label htmlFor="short">Corta:</label>
-                                    <input type="text" placeholder="25" id="short" required 
+                                    <input type="number" min={0} max={100} placeholder="25" id="short" required 
                                     value={formData.responseLength.short}
                                     onChange={(e) => setFormData(prev => ({
                                         ...prev,
@@ -188,7 +194,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
 
                                 <section className="flex gap-3 items-center">
                                     <label htmlFor="medium">Mediana:</label>
-                                    <input type="text" placeholder="25" id="medium" required 
+                                    <input type="number" min={0} max={100} placeholder="25" id="medium" required 
                                     value={formData.responseLength.medium}
                                     onChange={(e) => setFormData(prev => ({
                                         ...prev,
@@ -203,7 +209,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
 
                                 <section className="flex gap-3 items-center">
                                     <label htmlFor="long">Larga:</label>
-                                    <input type="text" placeholder="25" id="long" required 
+                                    <input type="number" min={0} max={100} placeholder="25" id="long" required 
                                     value={formData.responseLength.long}
                                     onChange={(e) => setFormData(prev => ({
                                         ...prev,
@@ -235,7 +241,6 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                             <div className="flex justify-center gap-6">
                                 <button onClick={handleBack} className="hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer">Atras</button>
                                 <button className="border border-black p-2 rounded-2xl text-white bg-black hover:bg-white hover:text-black hover:scale-[1.02] transition-all duration-200 ease-out cursor-pointer"
-                                onClick={() => saveNew}
                                 type="submit"
                                 >
                                     Guardar
@@ -243,7 +248,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                             </div>
                         </form>
                     </div>
-                )}
+                ))}
             </div>
 
         );

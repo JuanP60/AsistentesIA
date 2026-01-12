@@ -1,10 +1,12 @@
+"use client";
+
 import { ModalsDeleteTypes } from "@/types/Modals";
 import { useEffect } from "react";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { localStorageContext } from "@/context/LocalStorageContext";
 
 export function ModalDelete({isOpenDelete, isCloseDelete, id}: ModalsDeleteTypes) {
 
-    const {deleteAgent} = useLocalStorage(); // cambiar por un context
+    const {deleteAgent} = localStorageContext();
 
     useEffect(() => {
     
@@ -23,15 +25,19 @@ export function ModalDelete({isOpenDelete, isCloseDelete, id}: ModalsDeleteTypes
     if (isOpenDelete) {
         return (
             <div className="fixed inset-0 flex items-center justify-center z-50">
-                <div className="flex flex-col items-center justify-center gap-5 fixed bg-white border border-gray-100 rounded-2xl">
-                    <form>
+                <div className=" bg-white border border-gray-100 rounded-2xl p-5">
+                    <form className="flex flex-col gap-5">
                         <section>
                             <p>¿Seguro quieres eliminar este agente?</p>
                         </section>
 
-                        <section>
-                            <button onClick={deleteAssistant} className="hover:cursor-pointer">Eliminar</button>
-                            <button onClick={isCloseDelete} className="hover:cursor-pointer">Cancelar</button>
+                        <section className="flex gap-3 justify-center">
+                            <button onClick={deleteAssistant} className="border border-black p-2 rounded-2xl text-white bg-black hover:bg-white hover:text-black hover:scale-[1.02] transition-all duration-200 ease-out cursor-pointer">
+                                Eliminar
+                            </button>
+                            <button onClick={isCloseDelete} className="hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer">
+                                Cancelar
+                            </button>
                         </section>
                     </form>
                 </div>
