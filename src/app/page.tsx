@@ -25,8 +25,8 @@ export default function Home() {
         </div>
 
         <ModalCreate
-        isOpen1={isOpen1}
-        onClose1={() => setIsOpen1(false)}
+          isOpen1={isOpen1}
+          onClose1={() => setIsOpen1(false)}
         />
 
     </div>
