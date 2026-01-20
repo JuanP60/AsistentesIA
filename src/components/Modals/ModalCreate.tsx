@@ -115,9 +115,9 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                             className="w-full appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none
                             transition-all duration-200 focus:border-black focus:ring-1 focus:ring-black hover:cursor-pointer">
                                 <option value="" disabled className="placeholder-gray-400">Seleccion un idioma</option>
-                                <option value="español">Español</option>
-                                <option value="ingles">Inglés</option>
-                                <option value="portugues">Portugués</option>
+                                <option value="Español">Español</option>
+                                <option value="Inglés">Inglés</option>
+                                <option value="Portugues">Portugués</option>
                             </select>
                         </section>
                         
@@ -133,10 +133,10 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                             className="w-full appearance-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none
                             transition-all duration-200 focus:border-black focus:ring-1 focus:ring-black hover:cursor-pointer">
                                 <option value="" disabled>Selecciona un tono</option>
-                                <option value="formal">Formal</option>
-                                <option value="casual">Casual</option>
-                                <option value="profesional">Profesional</option>
-                                <option value="amigable">Amigable</option>
+                                <option value="Formal">Formal</option>
+                                <option value="Casual">Casual</option>
+                                <option value="Profesional">Profesional</option>
+                                <option value="Amigable">Amigable</option>
                             </select>
                         </section>
                         <hr className="text-gray-300 w-full"/>
@@ -180,7 +180,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                             <section className="flex gap-3 items-center">
                                 <label htmlFor="short">Corta:</label>
                                 <input type="number" min={0} max={100} placeholder="25" id="short" required 
-                                value={formData.responseLength.short}
+                                value={formData.responseLength.short} 
                                 onChange={(e) => setFormData(prev => ({
                                     ...prev,
                                     responseLength: {

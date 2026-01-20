@@ -97,6 +97,8 @@ export function StorageProvider({children}: StorageProviderProps) {
         localStorage.setItem("assistants", JSON.stringify(filtered));
     }
 
+    // edit agent
+
     const storageData = {state, saveNewAgent, deleteAgent}
     
     return (
