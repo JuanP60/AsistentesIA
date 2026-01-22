@@ -16,6 +16,7 @@ interface StorageContextType {
   state: UseAssistantsState;
   saveNewAgent: (data: CompleteAssistant) => void;
   deleteAgent: (id: string) => void;
+  editAgent: (agentEdit: CompleteAssistant) => void;
 }
 
 //tipado para provider (uso de context)
@@ -99,7 +100,30 @@ export function StorageProvider({children}: StorageProviderProps) {
 
     // edit agent
 
-    const storageData = {state, saveNewAgent, deleteAgent}
+    const editAgent = (agentEdit: CompleteAssistant) => {
+        try {
+            const agentToEdit = state.assistants.findIndex(agent => agent.id === agentEdit.id); // solo editamos agente que concuerde con el id
+
+            if (agentToEdit === -1) { // para evitar el error de que no sea encontrado.
+                throw new Error("Agente no encontrado");
+            }
+
+            const updatedAgents = [...state.assistants]
+            updatedAgents[agentToEdit] = agentEdit; // actualizamos solo el agente localizado con el index
+
+            setAssistantsState(prev => ({
+                ...prev,
+                assistants: updatedAgents
+            }));
+
+            localStorage.setItem("assistants", JSON.stringify(updatedAgents));
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const storageData = {state, saveNewAgent, deleteAgent, editAgent}
     
     return (
         <StorageContext.Provider value={storageData}>

@@ -22,7 +22,10 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
         },
         audioEnabled: false,
         rules: ""
-    })
+    });
+
+    const total = Number(formData.responseLength.short + formData.responseLength.medium + formData.responseLength.long);
+    const isValid = total === 100;
 
     // aislar modal
 
@@ -63,7 +66,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
     }
 
     const saveNew = (e: React.FormEvent<HTMLFormElement>) => {
-        // validar porcentajes
+
         e.preventDefault();
         onCleanData(); // limpia form
         setStep(1); // reinicio steps modales
@@ -74,10 +77,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
             id: Date.now().toString(),
         }
 
-        saveNewAgent(newAgent);
-    
-        //alert("Porcentajes deben sumar 100% antes de continuar");
-        
+        saveNewAgent(newAgent); 
     } 
 
     if (!isOpen1) return null;
@@ -241,7 +241,7 @@ export function ModalCreate({isOpen1, onClose1}: ModalsTypes) {
                         <div className="flex justify-center gap-6">
                             <button onClick={handleBack} className="hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer">Atras</button>
                             <button className="border border-black p-2 rounded-2xl text-white bg-black hover:bg-white hover:text-black hover:scale-[1.02] transition-all duration-200 ease-out cursor-pointer"
-                            type="submit"
+                            type="submit" disabled={!isValid}
                             >
                                 Guardar
                             </button>

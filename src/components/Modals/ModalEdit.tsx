@@ -4,20 +4,56 @@ import { EditTypes } from "@/types/Modals";
 import { useEffect, useState } from "react";
 import { BotMessageSquare} from "lucide-react";
 import { CompleteAssistant } from "@/types/Assistant";
+import { localStorageContext } from "@/context/LocalStorageContext";
 
 export function ModalEdit({isEditOpen, isCloseEdit, agentInfo}: EditTypes) {
 
     const [agentEdit, setAgentEdit] = useState<CompleteAssistant>(agentInfo);
+    const {editAgent} = localStorageContext();
 
     // handler para inputs:
 
     const onEdit = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> )=> {    
         const {name, value,  type} = e.target;
 
+        // para manejar valores
+
+        if (type === "number" && ["short", "medium", "long"].includes(name)) {
+            setAgentEdit(prev => ({
+                ...prev,
+
+                responseLength: {
+                    ...prev.responseLength,
+                    [name]: Number(value)
+                }
+            }));
+            return;
+        }
+
+        // para el checkbox:
+
+        if (type === "checkbox") {
+
+            const target = e.target as HTMLInputElement;
+            setAgentEdit(prev => ({
+            ...prev,
+            [name]: target.checked,
+            }));
+             return;
+        }
+
+        // para text normales o selects:
+
         setAgentEdit(prev => ({
             ...prev,
-            [name]: type === "number" ? Number(value) : value
+            
+            [name]: value
         }));
+    }
+
+    const onSaveEdit = () => {
+        editAgent(agentEdit);
+        isCloseEdit(); // cerramos modal, ideal mostrar toast, agent {name} editado
     }
 
     useEffect(() => {
@@ -38,6 +74,7 @@ export function ModalEdit({isEditOpen, isCloseEdit, agentInfo}: EditTypes) {
                     <BotMessageSquare />
                     <h1 className="text-xl font-medium">Editando {agentInfo.name}</h1>
                 </section>      
+
                 <div className="flex flex-row gap-15">
                     <form action="" className="flex flex-col gap-5">
 
@@ -91,7 +128,7 @@ export function ModalEdit({isEditOpen, isCloseEdit, agentInfo}: EditTypes) {
                         <div className="flex flex-col gap-4">
                             <section className="flex gap-3 items-center">
                                 <label htmlFor="short">Corta:</label>
-                                <input type="number" min={0} max={100} placeholder="25" id="short" required value={agentEdit.responseLength.short} onChange={onEdit}
+                                <input type="number" min={0} max={100} placeholder="25" id="short" name="short" required value={agentEdit.responseLength.short} onChange={onEdit}
 
                                 className="w-24 rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400
                                 outline-none transition-all duration-200 focus:border-black focus:ring-1 focus:ring-black" />
@@ -99,7 +136,7 @@ export function ModalEdit({isEditOpen, isCloseEdit, agentInfo}: EditTypes) {
 
                             <section className="flex gap-3 items-center">
                                 <label htmlFor="medium">Mediana:</label>
-                                <input type="number" min={0} max={100} placeholder="25" id="medium" required value={agentEdit.responseLength.medium} onChange={onEdit}
+                                <input type="number" min={0} max={100} placeholder="25" id="medium" name="medium" required value={agentEdit.responseLength.medium} onChange={onEdit}
 
                                 className="w-24  rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400
                                 outline-none transition-all duration-200 focus:border-black focus:ring-1 focus:ring-black"/>
@@ -107,7 +144,7 @@ export function ModalEdit({isEditOpen, isCloseEdit, agentInfo}: EditTypes) {
 
                             <section className="flex gap-3 items-center">
                                 <label htmlFor="long">Larga:</label>
-                                <input type="number" min={0} max={100} placeholder="25" id="long" required value={agentEdit.responseLength.long} onChange={onEdit}
+                                <input type="number" min={0} max={100} placeholder="25" id="long" name="long" required value={agentEdit.responseLength.long} onChange={onEdit}
     
                                 className="w-24 rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400
                                 outline-none transition-all duration-200 focus:border-black focus:ring-1 focus:ring-black"/>
@@ -116,16 +153,20 @@ export function ModalEdit({isEditOpen, isCloseEdit, agentInfo}: EditTypes) {
 
                         <div className="flex gap-3 items-center">
                             <label htmlFor="audio">Respuestas de audio</label>
-                            <input type="checkbox" name="audio" id="audio"
+                            <input type="checkbox" name="audioEnabled" id="audio" checked={agentEdit.audioEnabled} onChange={onEdit}
 
                             className="h-5 w-5 appearance-none rounded-md border border-gray-300 bg-white transition-all duration-200 checked:bg-black checked:border-black
                             checked:after:content-['✓'] checked:after:text-white checked:after:text-sm checked:after:flex checked:after:items-center checked:after:justify-center cursor-pointer focus:outline-none
                             focus:ring-1 focus:ring-black"/>
                         </div>
                     </form>
+
                 </div>
+
                     <section className="flex gap-5 justify-center">
-                        <button className="border border-black p-2 rounded-2xl text-white bg-black hover:bg-white hover:text-black hover:scale-[1.02] transition-all duration-200 ease-out cursor-pointer">
+                        <button 
+                            onClick={onSaveEdit}
+                            className="border border-black p-2 rounded-2xl text-white bg-black hover:bg-white hover:text-black hover:scale-[1.02] transition-all duration-200 ease-out cursor-pointer">
                             Editar
                         </button>
                         <button onClick={isCloseEdit} className="hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer">
