@@ -40,7 +40,7 @@ export function Card({agent, manageDelete, manageEdit}: CardTypes) {
                     <Trash size={20}/>
                 </button>
 
-                <Link href="" className="hover:-translate-y-0.5 transition-all duration-200 ease-out"><Brain size={20}/></Link>
+                <Link href={`/agents/${agent.id}`} className="hover:-translate-y-0.5 transition-all duration-200 ease-out"><Brain size={20}/></Link>
             </div>
         </>
     );

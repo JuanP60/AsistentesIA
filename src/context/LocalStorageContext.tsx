@@ -1,6 +1,7 @@
 "use client";
 
 import assistantsIA from "../data/asistentes.json";
+import genericResponses from "../data/responses.json";
 import { CompleteAssistant } from "@/types/Assistant";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -108,7 +109,7 @@ export function StorageProvider({children}: StorageProviderProps) {
                 throw new Error("Agente no encontrado");
             }
 
-            const updatedAgents = [...state.assistants]
+            const updatedAgents = [...state.assistants] // copiamos array
             updatedAgents[agentToEdit] = agentEdit; // actualizamos solo el agente localizado con el index
 
             setAssistantsState(prev => ({

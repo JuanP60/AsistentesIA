@@ -1,13 +1,14 @@
 import { Wrench } from "lucide-react";
 import { CircleUserRound } from "lucide-react";
+import Link from "next/link";
 
 export function Header () {
     return (
         <nav className="flex justify-between pt-8 md:pt-12 px-6 md:px-28">
-            <a href="" className="flex items-center gap-2 md:gap-3">
+            <Link href="/" className="flex items-center gap-2 md:gap-3">
                 <Wrench />
                 <span className="text-xl md:text-2xl">Autom IA</span>
-            </a>
+            </Link>
 
             <ul className="flex items-center gap-2 md:gap-9 hover:cursor-pointer">
                 <li className="relative inline-block after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-black
